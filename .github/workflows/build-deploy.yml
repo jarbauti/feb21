@@ -54,6 +54,9 @@ jobs:
             -t ${{ env.REGISTRY }}/${{ secrets.PROJECT_ID }}/${{ env.REPO }}/agent-backend:${{ github.sha }} \
             -t ${{ env.REGISTRY }}/${{ secrets.PROJECT_ID }}/${{ env.REPO }}/agent-backend:latest \
             backend/
+      # ─────────────────────────────────────
+      # Build — Frontend (Nginx)
+      # ─────────────────────────────────────
       - name: Build frontend image
         run: |
           docker build \
@@ -72,9 +75,6 @@ jobs:
           severity: 'CRITICAL,HIGH'
           ignore-unfixed: true
 
-      # ─────────────────────────────────────
-      #  Escaneo de seguridad — Frontend
-      # ─────────────────────────────────────
       - name: Trivy scan frontend image
         uses: aquasecurity/trivy-action@0.33.1
         with:
@@ -91,13 +91,7 @@ jobs:
         run: |
           docker push ${{ env.REGISTRY }}/${{ secrets.PROJECT_ID }}/${{ env.REPO }}/agent-frontend:${{ github.sha }}
           docker push ${{ env.REGISTRY }}/${{ secrets.PROJECT_ID }}/${{ env.REPO }}/agent-frontend:latest
-      # ─────────────────────────────────────
-      # Build y Push — Frontend (Nginx)
-      # ─────────────────────────────────────
-      
-
     
-
       # ─────────────────────────────────────
       # Instalar Ansible y plugin de GKE
       # ─────────────────────────────────────
